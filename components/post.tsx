@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -19,7 +18,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const Post: FC = ({ title, body }): JSX.Element => {
+const Post = ({ title, body }: PostProps): JSX.Element => {
   return (
     <>
       <Wrapper>

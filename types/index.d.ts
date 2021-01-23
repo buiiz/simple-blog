@@ -12,3 +12,8 @@ interface PostsState {
   posts: PostType[];
   loading: boolean;
 }
+
+type PostProps = {
+  title: string;
+  body: string;
+};
