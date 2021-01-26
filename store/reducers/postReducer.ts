@@ -1,23 +1,43 @@
-import * as types from '../actions/types';
-// import { PostActionType } from '../actions/types';
+import { HYDRATE } from 'next-redux-wrapper';
 
-const initialState = {
-  posts: [],
+import * as types from '../actions/types';
+
+const initialState: PostState = {
+  id: null,
+  title: null,
+  body: null,
+  comments: [],
   loading: false,
 };
 
-const postReducer = (state = initialState, action): PostsState => {
+const postReducer = (state = initialState, action: types.ActionTypes): PostState => {
   switch (action.type) {
-    case types.GET_POSTS_STARTED:
-      return { ...state, loading: !state.posts };
-    case types.GET_POSTS_SUCCESS:
-      return { ...state, posts: action.payload, loading: false };
-
-    case types.CREATE_NEW_POST_STARTED:
+    case types.GET_POST_STARTED:
       return { ...state, loading: true };
-    case types.CREATE_NEW_POST_SUCCESS:
-      return { ...state, posts: [...state.posts, action.payload], loading: false };
+    case types.GET_POST_SUCCESS:
+      console.log(action.payload);
+      return {
+        ...state,
+        loading: false,
+        id: action.payload.id,
+        title: action.payload.title,
+        body: action.payload.body,
+        comments: [...action.payload.comments],
+      };
 
+    // case types.CREATE_NEW_POST_STARTED:
+    //   return { ...state, loading: true };
+    // case types.CREATE_NEW_POST_SUCCESS:
+    //   return { ...state, posts: [...state.posts, action.payload], loading: false };
+
+    case HYDRATE:
+      return {
+        ...state,
+        ...action.payload.id,
+        ...action.payload.title,
+        ...action.payload.body,
+        ...action.payload.comments,
+      };
     default:
       return state;
   }

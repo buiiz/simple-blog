@@ -1,8 +1,9 @@
 import { AppProps } from 'next/app';
-import { Provider } from 'react-redux';
+import { FC } from 'react';
 import { createGlobalStyle } from 'styled-components';
 
-import { useStore } from '../store';
+// import { Provider } from 'react-redux';
+import wrapper from '../store';
 
 const GlobalStyle = createGlobalStyle`
   html,
@@ -23,15 +24,13 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const App = ({ Component, pageProps }: AppProps): JSX.Element => {
-  const store = useStore(pageProps.initialReduxState);
-
+const App: FC<AppProps> = ({ Component, pageProps }: AppProps): JSX.Element => {
   return (
-    <Provider store={store}>
+    <>
       <GlobalStyle />
       <Component {...pageProps} />
-    </Provider>
+    </>
   );
 };
 
-export default App;
+export default wrapper.withRedux(App);

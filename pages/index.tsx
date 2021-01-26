@@ -1,13 +1,15 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { FC, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import Header from '../components/header';
 import Loader from '../components/loader';
 import Post from '../components/post';
-import { getPosts } from '../store/actions/creatorsApi';
+import wrapper from '../store';
+import { getPosts } from '../store/actions/creators';
+import { StoreType } from '../store/reducers';
 
 const Wrapper = styled.div`
   .posts {
@@ -17,13 +19,8 @@ const Wrapper = styled.div`
   }
 `;
 
-const Home: FC = (): JSX.Element => {
-  const dispatch = useDispatch();
-  const { posts, loading } = useSelector((state: PostsState) => state.posts);
-
-  useEffect(() => {
-    dispatch(getPosts());
-  }, [dispatch]);
+const Home = (): JSX.Element => {
+  const { posts, loading } = useSelector((state: StoreType) => state.posts);
 
   return (
     <>
@@ -59,3 +56,7 @@ const Home: FC = (): JSX.Element => {
 };
 
 export default Home;
+
+export const getServerSideProps = wrapper.getServerSideProps(async ({ store }) => {
+  await store.dispatch(getPosts());
+});

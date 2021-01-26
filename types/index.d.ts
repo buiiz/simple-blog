@@ -1,15 +1,22 @@
-interface HeaderPropsType {
-  children: React.ReactNode;
+interface CommentType {
+  id: number;
+  body: string;
+  postId: number;
 }
 
 interface PostType {
-  id: number | string;
+  id: string;
   title: string;
   body: string;
+  comments: CommentType[];
 }
 
 interface PostsState {
   posts: PostType[];
+  loading: boolean;
+}
+
+interface PostState extends PostType {
   loading: boolean;
 }
 

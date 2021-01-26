@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import Header from '../../components/header';
-import { createPost } from '../../store/actions/creatorsApi';
+import { createPost } from '../../store/actions/creators';
 
 const Wrapper = styled.div`
   .post {

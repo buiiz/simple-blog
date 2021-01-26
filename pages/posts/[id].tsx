@@ -5,7 +5,9 @@ import styled from 'styled-components';
 
 import Header from '../../components/header';
 import Loader from '../../components/loader';
-import { getPosts } from '../../store/actions/creatorsApi';
+import wrapper from '../../store';
+import { getPost } from '../../store/actions/creators';
+import { StoreType } from '../../store/reducers';
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -29,22 +31,24 @@ const Wrapper = styled.div`
 `;
 
 const Post: FC = (): JSX.Element => {
-  const dispatch = useDispatch();
-  const { query } = useRouter();
-  const { posts, loading } = useSelector((state: PostsState) => state.posts);
+  const post = useSelector((state: StoreType) => state.posts);
+  const { posts, loading } = useSelector((state: StoreType) => state.posts);
 
-  const post = posts.find(el => String(el.id) === String(query.id));
+  console.log(post);
 
-  useEffect(() => {
-    dispatch(getPosts());
-  }, [dispatch]);
+  console.log(posts, loading);
+
+  // useEffect(() => {
+  //   dispatch(getPosts());
+  //   console.log('dis');
+  // }, [dispatch]);
 
   return (
     <>
       <Header />
       <Wrapper>
         <div className="posts">
-          {
+          {/* {
             // prettier-ignore
             loading ?
               (
@@ -59,7 +63,7 @@ const Post: FC = (): JSX.Element => {
                   <p className="body">{post.body}</p>
                 </div>
               )
-          }
+          } */}
         </div>
       </Wrapper>
     </>
@@ -67,3 +71,7 @@ const Post: FC = (): JSX.Element => {
 };
 
 export default Post;
+
+export const getServerSideProps = wrapper.getServerSideProps(async ({ query, store }) => {
+  await store.dispatch(getPost(query.id));
+});
